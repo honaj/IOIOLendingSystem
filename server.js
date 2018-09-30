@@ -24,7 +24,8 @@ io.on('connection', function(socket){
         console.log('Write complete')
       })
       .catch(error => console.error(error))
-      io.emit("borrowList", listToWrite);
+      io.emit("getList", listToWrite);
+      
     })
   });
 });

@@ -2,8 +2,12 @@ let socket = io();
 let borrowerName = document.getElementById("borrowerName");
 let objectToBorrow = document.getElementById("objectToBorrow");
 let sendButton = document.getElementById("sendButton");
-let borrowListDisplay = document.getElementById("borrowListDisplay");
-let listItems = [];
+let borrowListTable = document.getElementById("borrowListTable");
+let nameRow = document.getElementById("nameRow");
+let objectRow = document.getElementById("objectRow");
+let dateRow = document.getElementById("dateRow");
+let returnedRow = document.getElementById("returnedRow");
+let cells = [];
 
 sendButton.onclick = function() {
     if(borrowerName.value && objectToBorrow.value) {
@@ -15,12 +19,15 @@ sendButton.onclick = function() {
     }
 }
 
-socket.on("borrowList", function(readList) {
-    for(let i = 0; i < readList.length; i++) {
-        console.log(readList[i]);
-        let newListItem = document.createElement("li");
-        newListItem.innerHTML = readList[i].name + ", " + readList[i].object, + ", " + readList[i].date + ", " + readList[i].returned;
-        borrowListDisplay.appendChild(newListItem);
-        listItems.push(newListItem);
+socket.on("getList", function(list) {
+    for(cell of cells) {
+        cell.remove();
+    }
+    for(item of list) {
+        console.log(item);
+        cells.push(nameRow.insertCell().appendChild(document.createTextNode(item.name)));
+        cells.push(objectRow.insertCell().appendChild(document.createTextNode(item.object)));
+        cells.push(dateRow.insertCell().appendChild(document.createTextNode(item.date)));
+        cells.push(returnedRow.insertCell().appendChild(document.createTextNode(item.returned)));
     }
 });

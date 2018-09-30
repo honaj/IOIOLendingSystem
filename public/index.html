@@ -7,8 +7,21 @@
     <input type ="text" id="borrowerName" placeholder="your name">
     <input type ="text" id="objectToBorrow" placeholder="thing you want to borrow">
     <button id="sendButton">Borrow</button>
-    <ul id ="borrowListDisplay">
-    </ul>
+    <table id ="borrowListTable"width="100%">
+      <tr id="nameRow">
+        <th>Name</th>
+      </tr>
+      <tr id="objectRow">
+        <th>Object</th>
+      </tr>
+      <tr id="dateRow">
+        <th>Date</th>
+      </tr>
+      <tr id="returnedRow">
+        <th>Returned</th>
+      </tr>
+    </table>
+    <link href="style.css" rel="stylesheet">
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
   </body>
