@@ -1,1 +1,1 @@
-express, jsonfile
+express, jsonfile, socket.io

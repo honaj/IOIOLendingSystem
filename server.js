@@ -3,8 +3,8 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const jsonfile = require("jsonfile");
-const borrowList = "list.json";
-let listToWrite = [];
+const borrowListJson = "list.json";
+let borrowList = [];
 
 app.use(express.static('public'));
 app.use(express.static('list.json'));
@@ -14,18 +14,29 @@ http.listen(8000, function(){
 });
 
 io.on('connection', function(socket){
+  refreshList();
+  //console.log(refreshList())
   socket.on('loanData', function (loanData) {
-    jsonfile.readFile(borrowList, function (err, listToRead) {
-      listToWrite = listToRead;
-      listToWrite.push(loanData);
-      if (err) console.error(err)
-      jsonfile.writeFile(borrowList, listToWrite, { spaces: 2 })
+      
+      borrowList.push(loanData);
+      
+      jsonfile.writeFile(borrowListJson, borrowList, { spaces: 2 })
       .then(res => {
         console.log('Write complete')
       })
       .catch(error => console.error(error))
-      io.emit("getList", listToWrite);
-      
-    })
   });
 });
+
+function pushListToClient() {
+  
+}
+
+function refreshList () {
+  jsonfile.readFile(borrowListJson, function (err, list) {
+    //borrowList = list;
+    console.log(list);
+    if (err) console.error(err)
+    io.emit("populateTable", list);
+  })
+}
